@@ -15,9 +15,6 @@ let allCards = document.getElementsByClassName('card'),
     matchedCards = 0,
     startTime;
 
-/*
- * the deck is shuffled for the first time when document loads
-*/
 
 let model = {
     chords: {
@@ -33,9 +30,45 @@ let model = {
         10:"F#",
         11:"G",
         12:"G#"
+    },
+    selectedChords: {}
+};
+
+
+let controller = {
+    init: function() {
+        console.log("controller called");
+        chordListView.init();
+    },
+    getChords: function() {
+        return model.chords;
     }
 };
 
-let view = {};
+let chordListView = {
+    init: function() {
+        this.chordListElem = document.getElementById('chord_list');
+        this.render();
+    },
 
-let controller = {};
+    render: function() {
+        console.log("chord render called");
+        let chord, elem, i;
+
+        //get chords from the model
+        let chords = controller.getChords();
+
+        //for loop to add all the chords to the dom
+        for (i in chords) {
+
+            elem = document.createElement('li');
+            chord = chords[i];
+            elem.textContent = chord;
+            this.chordListElem.appendChild(elem);
+        };
+    }
+};
+
+let selectedChordsView = {};
+
+controller.init();
