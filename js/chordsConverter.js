@@ -31,7 +31,7 @@ let model = {
         11:"G",
         12:"G#"
     },
-    chordsModifiers: {
+    chordModifiers: {
         minor:"m",
         7:"7",
         9:"9",
@@ -48,17 +48,27 @@ let controller = {
     },
     getChords: function() {
         return model.chords;
+    },
+    getModifiers: function(){
+        return model.chordModifiers;
     }
 };
 
 let chordListView = {
     init: function() {
         this.chordListElem = document.getElementById('chord_list');
+        this.chordModifiersElem = document.getElementById('modifiers_list');
+
         this.render();
     },
 
     render: function() {
-        console.log("chord render called");
+        console.log("chord and modifiers render called");
+
+        /*
+            Rendering the list of chords
+        */
+
         let chord, elem, i;
 
         //get chords from the model
@@ -72,15 +82,15 @@ let chordListView = {
             //get the current chord from the chord list
             chord = chords[i];
 
-            //add event listeners
+            //add event listeners; attention to closure on these events
             elem.addEventListener('click', (function(chordCopy) {
                 return function() {
+                    console.log("The chord clicked was: " + chordCopy);
 
-                    console.log("added events");
-                    console.log(chordCopy);
                     /*
                     octopus.setCurrentCat(catCopy);
-                    catView.render(); */
+                    catView.render();
+                    */
                 };
             })(chord));
 
@@ -90,6 +100,41 @@ let chordListView = {
             //add the element
             this.chordListElem.appendChild(elem);
         };
+
+        /*
+            Rendering the list of chord modifiers
+            NOTE: not very DRY!
+        */
+        let modifier;
+
+        //get the modifiers
+        let modifiers = controller.getModifiers();
+
+        for (i in modifiers) {
+            //creates a list element
+            elem = document.createElement('li');
+
+            //get the current chord from the chord list
+            modifier = modifiers[i];
+
+            //add event listeners; attention to closure on these events
+            elem.addEventListener('click', (function(modCopy) {
+                return function() {
+                    console.log("The chord clicked was: " + modCopy);
+
+                    /*
+                    octopus.setCurrentCat(catCopy);
+                    catView.render();
+                    */
+                };
+            })(modifier));
+
+            //set the elem's text to the modifier
+            elem.textContent = modifier;
+
+            //add the element
+            this.chordModifiersElem.appendChild(elem);
+        };
     }
 };
 
@@ -97,6 +142,6 @@ let selectedChordsView = {};
 
 
 /*
-    Initializatio
+    Initialization
 */
-//controller.init();
+controller.init();
