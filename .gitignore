@@ -1,0 +1,8 @@
+# Specific files #
+##################
+
+hello.js
+hello-world-server.js
+*.json
+design/
+
