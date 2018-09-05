@@ -31,6 +31,12 @@ let model = {
         11:"G",
         12:"G#"
     },
+    chordsModifiers: {
+        minor:"m",
+        7:"7",
+        9:"9",
+        sus:"sus"
+    },
     selectedChords: {}
 };
 
@@ -60,10 +66,28 @@ let chordListView = {
 
         //for loop to add all the chords to the dom
         for (i in chords) {
-
+            //creates a list element
             elem = document.createElement('li');
+
+            //get the current chord from the chord list
             chord = chords[i];
+
+            //add event listeners
+            elem.addEventListener('click', (function(chordCopy) {
+                return function() {
+
+                    console.log("added events");
+                    console.log(chordCopy);
+                    /*
+                    octopus.setCurrentCat(catCopy);
+                    catView.render(); */
+                };
+            })(chord));
+
+            //set the elem's text to the chord
             elem.textContent = chord;
+
+            //add the element
             this.chordListElem.appendChild(elem);
         };
     }
@@ -71,4 +95,8 @@ let chordListView = {
 
 let selectedChordsView = {};
 
-controller.init();
+
+/*
+    Initializatio
+*/
+//controller.init();
