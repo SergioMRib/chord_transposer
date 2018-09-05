@@ -81,15 +81,20 @@ let controller = {
     init: function() {
         console.log("controller called");
         chordListView.init();
+        selectedChordsView.init();
     },
     getChords: function() {
         return model.chords;
+    },
+    getSelectedChords: function() {
+        return model.selectedChords;
     },
     getModifiers: function(){
         return model.chordModifiers;
     },
     selectChord: function(clickedChord) {
-        return model.selectedChords.push(clickedChord);
+        model.selectedChords.push(clickedChord);
+        selectedChordsView.render();
     },
     deleteChord: function() {}
 };
@@ -126,14 +131,14 @@ let chordListView = {
             //add event listeners; attention to closure on these events
             elem.addEventListener('click', (function(chordCopy) {
                 return function() {
-                    console.log("The chord clicked was: " + chordCopy);
-                    controller.selectChord(chord);
+                    console.log("The chord clicked was: " + chordCopy.name);
+                    controller.selectChord(chordCopy);
                     /*
                     octopus.setCurrentCat(catCopy);
                     catView.render();
                     */
                 };
-            })(chord.name));
+            })(chord));
 
             //set the elem's text to the chord
             elem.textContent = chord.name;
@@ -186,6 +191,26 @@ let selectedChordsView = {
     },
     render: function() {
         //this will render each time a chord is selected
+        this.selectedChordsElem.innerHTML = '';
+        console.log("selected view was rendered");
+
+        let chord, elem, i;
+
+        //get chords from the model
+        let chords = controller.getSelectedChords();
+
+        //for loop to add all the chords to the dom
+        for (i in chords) {
+            elem = document.createElement('li');
+
+            chord = chords[i];
+
+            //add the event listener
+            elem.textContent = chord.name;
+
+            //add the element
+            this.selectedChordsElem.appendChild(elem);
+        }
     }
 };
 
