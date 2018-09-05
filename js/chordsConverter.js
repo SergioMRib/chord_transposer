@@ -17,27 +17,63 @@ let allCards = document.getElementsByClassName('card'),
 
 
 let model = {
-    chords: {
-        1:"A",
-        2:"A#",
-        3:"B",
-        4:"C",
-        5:"C#",
-        6:"D",
-        7:"D#",
-        8:"E",
-        9:"F",
-        10:"F#",
-        11:"G",
-        12:"G#"
-    },
+    chords: [
+        {
+            pos:1,
+            name:"A"
+        },
+        {
+            pos:2,
+            name: "A#"
+        },
+        {
+            pos:3,
+            name:"B"
+        },
+        {
+            pos:4,
+            name:"C"
+        },
+        {
+            pos:5,
+            name:"C#"
+        },
+        {
+            pos:6,
+            name:"D"
+        },
+        {
+            pos:7,
+            name:"D#"
+        },
+        {
+            pos:8,
+            name:"E"
+        },
+        {
+            pos:9,
+            name:"F"
+        },
+        {
+            pos:10,
+            name:"F#"
+        },
+        {
+            pos:11,
+            name:"G"
+        },
+        {
+            pos:12,
+            name:"G#"
+        }
+    ],
     chordModifiers: {
         minor:"m",
         7:"7",
         9:"9",
         sus:"sus"
     },
-    selectedChords: {}
+    selectedChords: []
 };
 
 
@@ -51,7 +87,11 @@ let controller = {
     },
     getModifiers: function(){
         return model.chordModifiers;
-    }
+    },
+    selectChord: function(clickedChord) {
+        return model.selectedChords.push(clickedChord);
+    },
+    deleteChord: function() {}
 };
 
 let chordListView = {
@@ -79,23 +119,24 @@ let chordListView = {
             //creates a list element
             elem = document.createElement('li');
 
-            //get the current chord from the chord list
+            //get the current chord (the object) from the chords list
             chord = chords[i];
+
 
             //add event listeners; attention to closure on these events
             elem.addEventListener('click', (function(chordCopy) {
                 return function() {
                     console.log("The chord clicked was: " + chordCopy);
-
+                    controller.selectChord(chord);
                     /*
                     octopus.setCurrentCat(catCopy);
                     catView.render();
                     */
                 };
-            })(chord));
+            })(chord.name));
 
             //set the elem's text to the chord
-            elem.textContent = chord;
+            elem.textContent = chord.name;
 
             //add the element
             this.chordListElem.appendChild(elem);
@@ -138,7 +179,15 @@ let chordListView = {
     }
 };
 
-let selectedChordsView = {};
+let selectedChordsView = {
+
+    init: function() {
+        this.selectedChordsElem = document.getElementById('chords_selection');
+    },
+    render: function() {
+        //this will render each time a chord is selected
+    }
+};
 
 
 /*
