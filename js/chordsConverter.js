@@ -5,15 +5,8 @@
  * The shuffle function will assign new index values
  */
 
-const restartButton = document.getElementById('restart'),
-      theDeck = document.getElementById('the-deck'),
-      winnerAlert = document.getElementsByClassName('winner-alert')[0];
+const restartButton = document.getElementById('restart');
 
-let allCards = document.getElementsByClassName('card'),
-    clickedCards = [],
-    moveCount = 0,
-    matchedCards = 0,
-    startTime;
 
 
 let model = {
@@ -96,7 +89,12 @@ let controller = {
         model.selectedChords.push(clickedChord);
         selectedChordsView.render();
     },
-    deleteChord: function() {}
+    deleteChord: function(clickedChord) {
+        let i = model.selectedChords.indexOf(clickedChord);
+        console.log(i);
+        delete model.selectedChords[i];
+        console.log('you just unselected that chord');
+    }
 };
 
 let chordListView = {
@@ -132,7 +130,9 @@ let chordListView = {
             elem.addEventListener('click', (function(chordCopy) {
                 return function() {
                     console.log("The chord clicked was: " + chordCopy.name);
+                    //ask the controller to add it to the selected chords list
                     controller.selectChord(chordCopy);
+
                     /*
                     octopus.setCurrentCat(catCopy);
                     catView.render();
@@ -192,20 +192,32 @@ let selectedChordsView = {
     render: function() {
         //this will render each time a chord is selected
         this.selectedChordsElem.innerHTML = '';
-        console.log("selected view was rendered");
+        console.log("selected is about to rendered");
 
         let chord, elem, i;
 
         //get chords from the model
         let chords = controller.getSelectedChords();
 
-        //for loop to add all the chords to the dom
+        //for loop to add all the selecetd chords to the dom
         for (i in chords) {
             elem = document.createElement('li');
 
             chord = chords[i];
 
             //add the event listener
+            elem.addEventListener('click', (function(selectCopy) {
+                return function() {
+                    console.log("The chord clicked was: " + selectCopy.name);
+                    controller.deleteChord(selectCopy);
+                    selectedChordsView.render();
+                    /*
+                    octopus.setCurrentCat(catCopy);
+                    catView.render();
+                    */
+                };
+            })(chord));
+
             elem.textContent = chord.name;
 
             //add the element
