@@ -1,12 +1,14 @@
 /*
- * Create a list that holds all of your cards;
- * This will be used to shuffle the deck.
- * The produced list will have an index for each card.
- * The shuffle function will assign new index values
- */
+ * The point is to select a list of chords and then convvert them to
+ * a form of your linking
+ * The conversion is going to take place using two buttons: one to increase
+ * and another to decrease; each change by half a tone (I'll call it a step)
+*/
 
 const restartButton = document.getElementById('restart');
 
+//this variable is for testing the conversion
+let step = 1;
 
 
 let model = {
@@ -91,9 +93,48 @@ let controller = {
     },
     deleteChord: function(clickedChord) {
         let i = model.selectedChords.indexOf(clickedChord);
-        console.log(i);
         delete model.selectedChords[i];
         console.log('you just unselected that chord');
+    },
+    /*
+    @param chordList is an array of chord objects
+    */
+    convert: function(chordsList) {
+
+        //make sure the list is not empty
+        if (chordsList.length <= 1) {
+            alert('You have no chords selected; click them to select');
+            return;
+        };
+        //needed variables for processing: a new list and related position of the chord
+        let convertedChords = [],
+            position;
+
+        /*
+        * loop to increase the position one step,
+        * compare the new position to model.chords list and get the corresponding,
+        * push to the converted chords list
+        */
+        chordsList.forEach(element => {
+            //change the position reference of each chord
+
+            position = element.pos + step;
+            console.log(`The position of the select is: ${element.pos}`)
+
+            //get the apropriate chord (returns the chord object) using the position and assign to a variable
+            newElement = model.chords.find(chord => {
+                return chord.pos === position;
+            });
+
+            //push the new chord to the list of converted chords
+            convertedChords.push(newElement);
+        });
+
+        //assign the new list to the selectedChords list
+        model.selectedChords = convertedChords;
+
+        //render the new list
+        selectedChordsView.render();
     }
 };
 
@@ -225,7 +266,6 @@ let selectedChordsView = {
         }
     }
 };
-
 
 /*
     Initialization
