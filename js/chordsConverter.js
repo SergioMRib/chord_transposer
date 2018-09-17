@@ -1,17 +1,27 @@
 /*
  * The point is to select a list of chords and then convvert them to
- * a form of your linking
+ * a form of your liking
  * The conversion is going to take place using two buttons: one to increase
  * and another to decrease; each change by half a tone (I'll call it a step)
 */
 
-const restartButton = document.getElementById('restart');
+const halfStepUpButton = document.getElementById('up-button'),
+      halfStepDownButton = document.getElementById('down-button');
 
-//this variable is for testing the conversion
-let step = 1;
+halfStepUpButton.addEventListener('click', function(){
+    model.step = 1;
+    controller.convert(model.selectedChords, model.step);
+});
+halfStepDownButton.addEventListener('click', function(){
+    model.step = -1;
+    controller.convert(model.selectedChords, model.step);
+});
+
+
 
 
 let model = {
+    step: 1,
     chords: [
         {
             pos:1,
@@ -96,13 +106,15 @@ let controller = {
         delete model.selectedChords[i];
         console.log('you just unselected that chord');
     },
-    /*
-    @param chordList is an array of chord objects
+
+    /**
+    @description Converts the selected chords list
+    @param {Array} selectChord - an array of chord objects
     */
-    convert: function(chordsList) {
+    convert: function(chordsList, step) {
 
         //make sure the list is not empty
-        if (chordsList.length <= 1) {
+        if (chordsList.length < 1) {
             alert('You have no chords selected; click them to select');
             return;
         };
@@ -110,7 +122,7 @@ let controller = {
         let convertedChords = [],
             position;
 
-        /*
+        /**
         * loop to increase the position one step,
         * compare the new position to model.chords list and get the corresponding,
         * push to the converted chords list
@@ -119,6 +131,11 @@ let controller = {
             //change the position reference of each chord
 
             position = element.pos + step;
+            if (position === 13) {
+                position = 1;
+            } else if (position === 0) {
+                position = 12;
+            };
             console.log(`The position of the select is: ${element.pos}`)
 
             //get the apropriate chord (returns the chord object) using the position and assign to a variable
