@@ -74,9 +74,11 @@ let model = {
     ],
     chordModifiers: {
         minor:"m",
+        maj:"M",
         7:"7",
         9:"9",
-        sus:"sus"
+        sus:"sus",
+        dim:"dim"
     },
     selectedChords: []
 };
@@ -98,13 +100,34 @@ let controller = {
         return model.chordModifiers;
     },
     selectChord: function(clickedChord) {
-        model.selectedChords.push(clickedChord);
+
+        //create a new object
+        let newChord = {
+            pos: '',
+            name: '',
+            modifier: ''
+        };
+        //define its properties according to the clicked chord
+        newChord.pos = clickedChord.pos;
+        newChord.name = clickedChord.name;
+
+        //add it to selected chords array
+        model.selectedChords.push(newChord);
         selectedChordsView.render();
     },
     deleteChord: function(clickedChord) {
+        //remove all modifiers
+        clickedChord.modifier = "";
+
+        //delete the chord from selectedChords array
         let i = model.selectedChords.indexOf(clickedChord);
         delete model.selectedChords[i];
         console.log('you just unselected that chord');
+    },
+    addModifier: function(modifier) {
+        //this will change the elements info on the original object
+        model.selectedChords[model.selectedChords.length - 1].modifier += modifier;
+        selectedChordsView.render();
     },
 
     /**
@@ -142,6 +165,11 @@ let controller = {
             newElement = model.chords.find(chord => {
                 return chord.pos === position;
             });
+
+            //move the modifiers to the new element
+            newElement.modifier = element.modifier
+            //remove the modifiers from the old element
+            element.modifier = "";
 
             //push the new chord to the list of converted chords
             convertedChords.push(newElement);
@@ -224,8 +252,9 @@ let chordListView = {
             //add event listeners; attention to closure on these events
             elem.addEventListener('click', (function(modCopy) {
                 return function() {
-                    console.log("The chord clicked was: " + modCopy);
+                    console.log("The chord modifier clicked was: " + modCopy);
 
+                    controller.addModifier(modCopy);
                     /*
                     octopus.setCurrentCat(catCopy);
                     catView.render();
@@ -276,7 +305,7 @@ let selectedChordsView = {
                 };
             })(chord));
 
-            elem.textContent = chord.name;
+            elem.textContent = chord.name + chord.modifier;
 
             //add the element
             this.selectedChordsElem.appendChild(elem);
