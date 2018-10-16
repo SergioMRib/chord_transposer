@@ -8,6 +8,9 @@
 const halfStepUpButton = document.getElementById('up-button'),
       halfStepDownButton = document.getElementById('down-button');
 
+/*
+    Event listeners to convert chord using the buttons and up and down arrows
+*/
 halfStepUpButton.addEventListener('click', function(){
     model.step = 1;
     controller.convert(model.selectedChords, model.step);
@@ -17,9 +20,26 @@ halfStepDownButton.addEventListener('click', function(){
     controller.convert(model.selectedChords, model.step);
 });
 
+document.addEventListener('keyup', function (e) {
+    var allowedKeys = {
+        38: 'up',
+        40: 'down'
+    };
+    if (e.keyCode === 38) {
+        model.step = 1;
+    };
+    if (e.keyCode === 40) {
+        model.step = -1;
+    };
+    controller.convert(model.selectedChords, model.step);
+});
 
-
-
+/*
+    MODEL: Here is:
+        - list of chords - unchangeable
+        - list of modifiers - unchangeable
+        - list of selected chord - changeable by clicking
+*/
 let model = {
     step: 1,
     chords: [
@@ -83,7 +103,9 @@ let model = {
     selectedChords: []
 };
 
-
+/*
+    CONTROLLER
+*/
 let controller = {
     init: function() {
         console.log("controller called");
@@ -116,9 +138,6 @@ let controller = {
         selectedChordsView.render();
     },
     deleteChord: function(clickedChord) {
-        //remove all modifiers
-        clickedChord.modifier = "";
-
         //delete the chord from selectedChords array
         let i = model.selectedChords.indexOf(clickedChord);
         delete model.selectedChords[i];
@@ -207,6 +226,7 @@ let chordListView = {
         for (i in chords) {
             //creates a list element
             elem = document.createElement('li');
+            elem.className = 'chord';
 
             //get the current chord (the object) from the chords list
             chord = chords[i];
@@ -215,7 +235,7 @@ let chordListView = {
             //add event listeners; attention to closure on these events
             elem.addEventListener('click', (function(chordCopy) {
                 return function() {
-                    console.log("The chord clicked was: " + chordCopy.name);
+                    console.log(`The chord clicked was: ${chordCopy.name}`);
                     //ask the controller to add it to the selected chords list
                     controller.selectChord(chordCopy);
 
@@ -245,6 +265,7 @@ let chordListView = {
         for (i in modifiers) {
             //creates a list element
             elem = document.createElement('li');
+            elem.className = 'modifier';
 
             //get the current chord from the chord list
             modifier = modifiers[i];
@@ -289,6 +310,7 @@ let selectedChordsView = {
         //for loop to add all the selecetd chords to the dom
         for (i in chords) {
             elem = document.createElement('li');
+            elem.className = 'selected-chord';
 
             chord = chords[i];
 
