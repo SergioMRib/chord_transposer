@@ -225,7 +225,7 @@ let chordListView = {
         //for loop to add all the chords to the dom
         for (i in chords) {
             //creates a list element
-            elem = document.createElement('li');
+            elem = document.createElement('div');
             elem.className = 'chord';
 
             //get the current chord (the object) from the chords list
@@ -264,7 +264,7 @@ let chordListView = {
 
         for (i in modifiers) {
             //creates a list element
-            elem = document.createElement('li');
+            elem = document.createElement('div');
             elem.className = 'modifier';
 
             //get the current chord from the chord list
@@ -284,7 +284,7 @@ let chordListView = {
             })(modifier));
 
             //set the elem's text to the modifier
-            elem.textContent = modifier;
+            elem.textContent = '...' + modifier;
 
             //add the element
             this.chordModifiersElem.appendChild(elem);
@@ -300,7 +300,7 @@ let selectedChordsView = {
     render: function() {
         //this will render each time a chord is selected
         this.selectedChordsElem.innerHTML = '';
-        console.log("selected is about to rendered");
+        console.log("selected is about to be rendered");
 
         let chord, elem, i;
 
@@ -309,7 +309,7 @@ let selectedChordsView = {
 
         //for loop to add all the selecetd chords to the dom
         for (i in chords) {
-            elem = document.createElement('li');
+            elem = document.createElement('div');
             elem.className = 'selected-chord';
 
             chord = chords[i];

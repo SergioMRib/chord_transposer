@@ -10,31 +10,32 @@
 </head>
 <body>
     <div class="container">
-        <section class="panel">
-        	<div id="up-button" class="restart">
-                Click me to convert UP (temporary)
-                <i class="fas fa-arrow-circle-up"></i>
-            </div>
-            <div id="down-button" class="restart">
-                Click me to convert DOWN (temporary)
-                <i class="fas fa-arrow-circle-down"></i>
+        <header class="header">A Simple Chord Transposer tool</header>
+        <div><i class="fas fa-bars"></i></div>
+        <section class="selection-of-chords">
+            <div id="chords_selection">
             </div>
         </section>
         <section class="list-of-chords">
-            <ul id="chord_list">
-            </ul>
+            <div id="chord_list">
+            </div>
         </section>
         <section class="list-of-modifiers">
-            <ul id="modifiers_list">
-            </ul>
+            <div id="modifiers_list">
+            </div>
         </section>
-        <section class="selection-of-chords">
-            <ul id="chords_selection">
-            </ul>
-
+        <section class="panel">
+            <div id="up-button" class="restart">
+                <i class="fas fa-arrow-circle-up"></i>
+                half a step
+            </div>
+            <div id="down-button" class="restart">
+                <i class="fas fa-arrow-circle-down"></i>
+                half a step
+            </div>
         </section>
-
-        <ul id="all_chords"  class="deck">
+        <footer class="footer">Sérgio Ribeiro 2018</footer>
+        <!-- <ul id="all_chords"  class="deck">
             <li class="card show">
                 C
             </li>
@@ -71,8 +72,9 @@
             <li class="card">
                 B
             </li>
-        </ul>
+        </ul> -->
     </div>
+    <div class="instructions">Instructions</div>
     <script src="js/chordsConverter.js"></script>
 </body>
 </html>

@@ -11,9 +11,7 @@ html {
 html,
 body {
     width: 100%;
-    height: 100%;
     margin: 0;
-    padding: 0;
 }
 
 body {
@@ -21,43 +19,100 @@ body {
     font-family: 'Roboto', 'Coda',  cursive;
 }
 
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+div {
+    border: 1px solid #0c8fa7;
 }
 
-h1 {
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 300;
+.container {
+    display: grid;
+    gap: 5px;
+    grid-template-columns: 1fr 50px 50px;
+    grid-template-rows: 50px auto 50px;
+   /*  justify-content: center; */
+    align-items: center;
+    grid-template-areas:
+    "header header menu"
+    "content chords modifiers"
+    "content panel panel"
+    "footer footer footer";
 }
+
+.header {
+    grid-area: header;
+    justify-self: center;
+}
+.selection-of-chords {
+    grid-area: content;
+}
+.list-of-chords {
+    grid-area: chords;
+}
+.list-of-modifiers {
+    grid-area: modifiers;
+}
+
+.panel {
+    grid-area: panel;
+    cursor: pointer;
+}
+
+.footer {
+    grid-area: footer;
+    justify-self: center;
+}
+
 
 /*
- * Styles for the deck of cards
- */
+* Styles for the chords
+*/
 
-.deck {
-    width: 90%;
-
+.list-of-chords, .list-of-modifiers {
     background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
-    padding: 32px;
-    border-radius: 10px;
+    border-radius: 2px;
     box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
-    display: flex;
-    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    margin: 0 0 3em;
 }
 
-.deck .card {
-    height: 80px;
-    width: 80px;
+.chord, .modifier {
+    text-align: center;
     background: #2e3d49;
-    font-size: 33px;
+    font-size: 18px;
     color: #ffffff;
-    border-radius: 8px;
+    border-radius: 2px;
+    cursor: pointer;
+    box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+}
+
+.selected-chord {
+    display: inline-flex;
+    margin-right: 5px;
+    list-style: none;
+    font-size: 20px;
+    color: #ff7402;
+    cursor: pointer;
+}
+
+/*
+ * Styles for the deck of cards;
+ * THIS IS FOR REFERENCE ONLY
+
+.deck,
+.list-of-chords {
+    background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
+    border-radius: 2px;
+    box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
+    justify-content: space-between;
+    align-items: center;
+}
+
+li,
+.deck .card,
+.list-of-chords .card {
+    background: #2e3d49;
+    font-size: 20px;
+    color: #ffffff;
+    border-radius: 2px;
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -65,53 +120,4 @@ h1 {
     box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
 }
 
-.deck .card.open {
-    transform: rotateY(0);
-    background: #02b3e4;
-    cursor: default;
-}
-
-/*
- * Styles for the Score Panel
- */
-
-.score-panel {
-    text-align: left;
-    width: 345px;
-    margin-bottom: 10px;
-}
-
-.score-panel .stars {
-    margin: 0;
-    padding: 0;
-    display: inline-block;
-    margin: 0 5px 0 0;
-}
-
-.score-panel .stars li {
-    list-style: none;
-    display: inline-block;
-}
-
-.score-panel .restart {
-    float: right;
-    cursor: pointer;
-}
-
-.winner-alert {
-    display: block;
-    cursor: pointer;
-    position: absolute;
-    text-align: center;
-    color: whitesmoke;
-    top: 150px;
-    width: 500px;
-    height: 200px;
-    background-color: #2e3d49;
-    border-radius: 10px;
-    box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
-
-}
-.hidden{
-    display: none;
-}
+*/
