@@ -6,7 +6,17 @@
 */
 
 const halfStepUpButton = document.getElementById('up-button'),
-      halfStepDownButton = document.getElementById('down-button');
+      halfStepDownButton = document.getElementById('down-button'),
+      hamburgerMenu = document.getElementsByClassName('hamburger-menu')[0],
+      instructions = document.getElementsByClassName('instructions')[0],
+      newLine = document.getElementById('new-line');
+
+/*
+  Button to togle instructions
+*/
+hamburgerMenu.addEventListener('click', function(){
+    instructions.classList.toggle('hidden');
+});
 
 /*
     Event listeners to convert chord using the buttons and up and down arrows
@@ -32,6 +42,16 @@ document.addEventListener('keyup', function (e) {
         model.step = -1;
     };
     controller.convert(model.selectedChords, model.step);
+});
+
+newLine.addEventListener('click', function(){
+    let line = {
+        pos: 'blank line',
+        name: '',
+        modifier: ''
+    };
+    model.selectedChords.push(line);
+    //document.getElementById('chords_selection').childNodes[1].className = 'selected-chord two'
 });
 
 /*
@@ -171,25 +191,31 @@ let controller = {
         */
         chordsList.forEach(element => {
             //change the position reference of each chord
+            let newElement;
 
-            position = element.pos + step;
-            if (position === 13) {
-                position = 1;
-            } else if (position === 0) {
-                position = 12;
+            if (element.pos !== 'blank line') {
+                // if it is not a blank line do all the operations
+                position = element.pos + step;
+                if (position === 13) {
+                    position = 1;
+                } else if (position === 0) {
+                    position = 12;
+                };
+                console.log(`The position of the select is: ${element.pos}`)
+
+                //get the apropriate chord (returns the chord object) using the position and assign to a variable
+                newElement = model.chords.find(chord => {
+                    return chord.pos === position;
+                });
+
+                //move the modifiers to the new element
+                newElement.modifier = element.modifier
+                //remove the modifiers from the old element
+                element.modifier = "";
+            } else {
+                //if it is a blank line just push it
+                newElement = element;
             };
-            console.log(`The position of the select is: ${element.pos}`)
-
-            //get the apropriate chord (returns the chord object) using the position and assign to a variable
-            newElement = model.chords.find(chord => {
-                return chord.pos === position;
-            });
-
-            //move the modifiers to the new element
-            newElement.modifier = element.modifier
-            //remove the modifiers from the old element
-            element.modifier = "";
-
             //push the new chord to the list of converted chords
             convertedChords.push(newElement);
         });
@@ -310,7 +336,12 @@ let selectedChordsView = {
         //for loop to add all the selecetd chords to the dom
         for (i in chords) {
             elem = document.createElement('div');
-            elem.className = 'selected-chord';
+
+            if (chords[i].pos === 'blank line') {
+                elem.className = 'selected-chord blank-line';
+            } else {
+                elem.className = 'selected-chord';
+            };
 
             chord = chords[i];
 

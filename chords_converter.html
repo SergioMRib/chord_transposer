@@ -11,7 +11,7 @@
 <body>
     <div class="container">
         <header class="header">A Simple Chord Transposer tool</header>
-        <div><i class="fas fa-bars"></i></div>
+        <div class="hamburger-menu"><i class="fas fa-bars"></i></div>
         <section class="selection-of-chords">
             <div id="chords_selection">
             </div>
@@ -32,6 +32,9 @@
             <div id="down-button" class="restart">
                 <i class="fas fa-arrow-circle-down"></i>
                 half a step
+            </div>
+            <div id="new-line">
+                New line
             </div>
         </section>
         <footer class="footer">Sérgio Ribeiro 2018</footer>
@@ -74,7 +77,15 @@
             </li>
         </ul> -->
     </div>
-    <div class="instructions">Instructions</div>
+    <section class="instructions hidden">
+        <p>Instructions:</p>
+        <ul>
+            <li>Select various chords by clicking on them</li>
+            <li>Click the arrows to convert up or down</li>
+            <li>Add the modifiers you want to the last chord selected</li>
+            <li>Click a selected chord to remove it</li>
+        </ul>
+    </section>
     <script src="js/chordsConverter.js"></script>
 </body>
 </html>
